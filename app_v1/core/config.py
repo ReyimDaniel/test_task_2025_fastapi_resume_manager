@@ -1,28 +1,25 @@
-from pydantic_settings import BaseSettings
-from pydantic import BaseModel
 from pathlib import Path
+from pydantic_settings import BaseSettings
 
 BASE_DIR = Path(__file__).parent.parent.parent
 
 
-class DbSettings(BaseModel):
-    url: str = "postgresql+asyncpg://user:886688zsewdc@localhost:5432/resume_database"
-    echo: bool = False
-
-
-class AuthJWT(BaseModel):
-    private_key_path: Path = BASE_DIR / "certs" / "jwt_private_key.pem"
-    public_key_path: Path = BASE_DIR / "certs" / "jwt_public_key.pem"
-    algorithm: str = "RS256"
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
-    RESPONSE_TOKEN_EXPIRE_DAYS: int = 7
-
-
 class Settings(BaseSettings):
+    db_url: str
+    db_echo: bool = False
+
+    jwt_private_key_path: Path
+    jwt_public_key_path: Path
+    jwt_algorithm: str = "RS256"
+    jwt_access_token_expire_minutes: int = 60
+    jwt_response_token_expire_days: int = 7
+
     api_v1_prefix: str = '/api/v1'
     alembic_prefix: str = '/alembic'
-    db: DbSettings = DbSettings()
-    auth_JWT: AuthJWT = AuthJWT()
+
+    class Config:
+        env_file = BASE_DIR / ".env"
+        env_file_encoding = 'utf-8'
 
 
 settings = Settings()

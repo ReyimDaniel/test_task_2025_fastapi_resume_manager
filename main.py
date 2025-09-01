@@ -4,10 +4,11 @@ from app_v1.controllers.user_controller import router as user_router
 from app_v1.controllers.resume_controller import router as resume_router
 from app_v1.core.db_helper import DataBaseHelper
 from app_v1.models.base import Base
+from app_v1.core.config import settings
 
 db_helper = DataBaseHelper(
-    url="postgresql+asyncpg://user:886688zsewdc@localhost:5432/resume_database",
-    echo=True
+    url=settings.db_url,
+    echo=settings.db_echo
 )
 
 app = FastAPI(title="FastAPI V1")
@@ -23,9 +24,7 @@ async def on_startup():
 
 @app.get("/")
 def hello_world():
-    return {
-        "message": "Hello World!"
-    }
+    return {"message": "Hello World!"}
 
 
 if __name__ == "__main__":
