@@ -10,11 +10,9 @@ if TYPE_CHECKING:
 class Resume(Base):
     __tablename__ = "resumes"
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
     title: Mapped[str] = mapped_column(String(50), nullable=False)
     description: Mapped[Optional[str]] = mapped_column(String(400), nullable=True)
     owner_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
 
-    owner: Mapped["User"] = relationship(
-        "User", back_populates="resumes"
-    )
+    owner: Mapped["User"] = relationship("User", back_populates="resumes")

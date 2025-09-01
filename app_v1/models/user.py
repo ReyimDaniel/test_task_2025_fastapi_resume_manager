@@ -10,11 +10,9 @@ if TYPE_CHECKING:
 class User(Base):
     __tablename__ = "users"
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
     name: Mapped[str] = mapped_column(String(40), nullable=False)
     email: Mapped[str] = mapped_column(String(40), unique=True, nullable=False)
     hashed_password: Mapped[str] = mapped_column(String(100), nullable=False)
 
-    resumes: Mapped[List["Resume"]] = relationship(
-        "Resume", back_populates="owner"
-    )
+    resumes: Mapped[List["Resume"]] = relationship("Resume", back_populates="owner")
