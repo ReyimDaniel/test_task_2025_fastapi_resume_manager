@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Ваши резюме</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="header">
+    <h2>Добро пожаловать, {{ user.name }}!</h2>
+    <form method="post" action="/logout">
+        <button class="logout" type="submit">Выйти</button>
+    </form>
+</div>
+
+<div class="container">
+    <h1>Ваши резюме</h1>
+
+    <div class="resume-card new-resume">
+        <h2>Создать новое резюме</h2>
+        <form method="post" action="/create_resume">
+            <input type="text" name="title" placeholder="Название резюме" required>
+            <textarea name="description" placeholder="Описание"></textarea>
+            <button type="submit">Создать</button>
+        </form>
+    </div>
+
+    {% for resume in resumes %}
+    <div class="resume-card">
+        <h2>{{ resume.title }} <span class="resume-id">#{{ resume.id }}</span></h2>
+        <p>{{ resume.description }}</p>
+
+        <form method="post" action="/update_resume_partial" class="form-inline">
+            <input type="hidden" name="resume_id" value="{{ resume.id }}">
+            <input type="text" name="title" placeholder="Новое название">
+            <textarea name="description" placeholder="Новое описание"></textarea>
+            <button type="submit">Обновить</button>
+        </form>
+
+        <form method="post" action="/delete_resume/{{ resume.id }}" class="form-inline">
+            <button type="submit" class="delete-btn">Удалить</button>
+        </form>
+    </div>
+    {% endfor %}
+</div>
+</body>
+</html>
