@@ -13,6 +13,6 @@ class User(Base):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     name: Mapped[str] = mapped_column(String(40), nullable=False)
     email: Mapped[str] = mapped_column(String(40), unique=True, nullable=False)
-    hashed_password: Mapped[str] = mapped_column(String(100), nullable=False)
+    password: Mapped[str] = mapped_column(String(100), nullable=False)
 
     resumes: Mapped[List["Resume"]] = relationship("Resume", back_populates="owner")

@@ -4,7 +4,6 @@ from pydantic import BaseModel, ConfigDict
 class ResumeBase(BaseModel):
     title: str
     description: str
-    owner_id: int  # TODO Remove
 
 
 class ResumeCreate(ResumeBase):
@@ -13,6 +12,8 @@ class ResumeCreate(ResumeBase):
 
 class ResumeRead(BaseModel):
     id: int
+    title: str
+    description: str
     owner_id: int
 
     class Config:
@@ -26,8 +27,3 @@ class ResumeUpdate(ResumeBase):
 class ResumeUpdatePartial(ResumeBase):
     title: str | None = None
     description: str | None = None
-
-
-class Resume(ResumeBase):
-    model_config = ConfigDict(from_attributes=True)
-    id: int

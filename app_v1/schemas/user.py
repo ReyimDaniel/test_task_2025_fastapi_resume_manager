@@ -7,6 +7,8 @@ class UserBase(BaseModel):
 
 
 class UserCreate(UserBase):
+    name: str
+    email: EmailStr
     password: str
 
 
@@ -26,6 +28,11 @@ class UserUpdatePartial(UserBase):
     name: str | None = None
     email: EmailStr | None = None
     password: str | None = None
+
+
+class UserLogin(BaseModel):
+    email: EmailStr
+    password: str
 
 
 class User(UserBase):

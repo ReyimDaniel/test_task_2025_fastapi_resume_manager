@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from .base import Base
 from sqlalchemy import Integer, String, ForeignKey
 from typing import Optional, TYPE_CHECKING
+from .base import Base
 
 if TYPE_CHECKING:
     from .user import User
