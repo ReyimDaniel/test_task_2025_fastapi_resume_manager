@@ -38,3 +38,16 @@ async def update_resume(session: AsyncSession, resume: Resume, resume_update: Re
 async def delete_resume(session: AsyncSession, resume: Resume) -> None:
     await session.delete(resume)
     await session.commit()
+
+
+async def improve_resume(session: AsyncSession, resume: Resume) -> Resume:
+    if resume.description and "[Improved]" in resume.description:
+        pass
+    else:
+        resume.description += (" Умение работать в режиме многозадачности и высокие аналитические"
+                               " способности позволяют мне эффективно работать с большими объёмами информации, "
+                               "быстро находить качественные решения сложных задач. [Improved]")
+    session.add(resume)
+    await session.commit()
+    await session.refresh(resume)
+    return resume

@@ -87,3 +87,20 @@ async def delete_resume(resume_id: int, session: AsyncSession = Depends(db_helpe
         raise HTTPException(status_code=404, detail="Resume not found")
     await resume_repository.delete_resume(session, resume)
     return None
+
+
+@router.post("/resume/{resume_id}/improve",
+             summary="Интеграция с AI",
+             description="(Тестовая версия. Заглушка.) Эндпоинт для улучшения резюме, существующего в базы данных. "
+                         "Необходимо ввести ID резюме, которое нужно улучшить.")
+async def improve_resume(
+    resume_id: int,
+    session: AsyncSession = Depends(db_helper.scoped_session_dependency),
+    current_user: User = Depends(get_current_user)
+):
+    resume = await resume_repository.get_resume_by_id(session, resume_id)
+    if not resume or resume.owner_id != current_user.id:
+        raise HTTPException(status_code=404, detail="Resume not found")
+
+    updated_resume = await resume_repository.improve_resume(session, resume)
+    return updated_resume

@@ -58,7 +58,6 @@ async def register_user(
     exists = await user_repository.get_user_by_email(session, email)
     if exists:
         return RedirectResponse("/register?msg=Email уже зарегистрирован", status_code=HTTP_303_SEE_OTHER)
-
     await user_repository.create_user(session, UserCreate(name=name, email=email, password=password))
     return RedirectResponse("/login?msg=Регистрация успешна! Теперь войдите", status_code=HTTP_303_SEE_OTHER)
 
@@ -81,7 +80,6 @@ async def index(request: Request, session: AsyncSession = Depends(db_helper.scop
     user = await get_current_user_from_cookie(request, session)
     if not user:
         return RedirectResponse("/login", status_code=HTTP_303_SEE_OTHER)
-
     resumes = await resume_repository.get_resumes(session, owner_id=user.id)
     return templates.TemplateResponse("index.html", {"request": request, "user": user, "resumes": resumes})
 
@@ -96,7 +94,6 @@ async def create_resume(
     user = await get_current_user_from_cookie(request, session)
     if not user:
         return RedirectResponse("/login", status_code=HTTP_303_SEE_OTHER)
-
     await resume_repository.create_resume(session, ResumeCreate(title=title, description=description), owner_id=user.id)
     return RedirectResponse("/index", status_code=HTTP_303_SEE_OTHER)
 
@@ -107,7 +104,6 @@ async def delete_resume(resume_id: int, request: Request,
     user = await get_current_user_from_cookie(request, session)
     if not user:
         return RedirectResponse("/login", status_code=HTTP_303_SEE_OTHER)
-
     resume = await resume_repository.get_resume_by_id(session, resume_id)
     if resume and resume.owner_id == user.id:
         await resume_repository.delete_resume(session, resume)
@@ -125,7 +121,6 @@ async def update_resume(
     user = await get_current_user_from_cookie(request, session)
     if not user:
         return RedirectResponse("/login", status_code=HTTP_303_SEE_OTHER)
-
     resume = await resume_repository.get_resume_by_id(session, resume_id)
     if resume and resume.owner_id == user.id:
         await resume_repository.update_resume(session, resume, ResumeUpdate(title=title, description=description))
@@ -143,19 +138,30 @@ async def update_resume_partial(
     user = await get_current_user_from_cookie(request, session)
     if not user:
         return RedirectResponse("/login", status_code=HTTP_303_SEE_OTHER)
-
     resume = await resume_repository.get_resume_by_id(session, resume_id)
     if not resume or resume.owner_id != user.id:
         raise HTTPException(status_code=404, detail="Resume not found")
-
     update_data = {
         "title": title if title and title.strip() else None,
         "description": description if description and description.strip() else None,
     }
     update_data = {k: v for k, v in update_data.items() if v is not None}
-
     if update_data:
         resume_update = ResumeUpdatePartial(**update_data)
         await resume_repository.update_resume(session, resume, resume_update, partial=True)
+    return RedirectResponse("/index", status_code=HTTP_303_SEE_OTHER)
 
+
+@router.post("/improve_resume")
+async def improve_resume_web(
+        resume_id: int = Form(...),
+        request: Request = None,
+        session: AsyncSession = Depends(db_helper.scoped_session_dependency)
+):
+    user = await get_current_user_from_cookie(request, session)
+    if not user:
+        return RedirectResponse("/login", status_code=HTTP_303_SEE_OTHER)
+    resume = await resume_repository.get_resume_by_id(session, resume_id)
+    if resume and resume.owner_id == user.id:
+        await resume_repository.improve_resume(session, resume)
     return RedirectResponse("/index", status_code=HTTP_303_SEE_OTHER)

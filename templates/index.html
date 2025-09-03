@@ -12,29 +12,29 @@
         <button class="logout" type="submit">Выйти</button>
     </form>
 </div>
-
 <div class="container">
     <h1>Ваши резюме</h1>
-
     <div class="resume-card new-resume">
-        <h2>Создать новое резюме</h2>
+        <h2>Создайте новое резюме!</h2>
         <form method="post" action="/create_resume">
-            <input type="text" name="title" placeholder="Название резюме" required>
+            <input type="text" name="title" placeholder="Заголовок резюме" required>
             <textarea name="description" placeholder="Описание"></textarea>
             <button type="submit">Создать</button>
         </form>
     </div>
-
     {% for resume in resumes %}
     <div class="resume-card">
         <h2>{{ resume.title }} <span class="resume-id">#{{ resume.id }}</span></h2>
         <p>{{ resume.description }}</p>
-
         <form method="post" action="/update_resume_partial" class="form-inline">
             <input type="hidden" name="resume_id" value="{{ resume.id }}">
-            <input type="text" name="title" placeholder="Новое название">
+            <input type="text" name="title" placeholder="Новый заголовок">
             <textarea name="description" placeholder="Новое описание"></textarea>
             <button type="submit">Обновить</button>
+        </form>
+        <form method="post" action="/improve_resume" class="form-inline">
+            <input type="hidden" name="resume_id" value="{{ resume.id }}">
+            <button type="submit">Улучшить с AI</button>
         </form>
 
         <form method="post" action="/delete_resume/{{ resume.id }}" class="form-inline">
