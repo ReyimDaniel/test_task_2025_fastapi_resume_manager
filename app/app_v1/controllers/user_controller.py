@@ -4,10 +4,10 @@ from fastapi import APIRouter, Depends, Path, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
 
-from app_v1.schemas.user import User
-from app_v1.core import db_helper
-from app_v1.repositories import user_repository
-from app_v1.schemas.user import UserRead, UserCreate, UserUpdate, UserUpdatePartial
+from app.app_v1.schemas.user import User
+from app.app_v1.core import db_helper
+from app.app_v1.repositories import user_repository
+from app.app_v1.schemas.user import UserRead, UserCreate, UserUpdate, UserUpdatePartial
 
 router = APIRouter(tags=['users'])
 

@@ -1,8 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
-from sqlalchemy.engine import Result
-from app_v1.models.resume import Resume
-from app_v1.schemas.resume import ResumeCreate, ResumeUpdate, ResumeUpdatePartial
+from app.app_v1.models.resume import Resume
+from app.app_v1.schemas.resume import ResumeCreate, ResumeUpdate, ResumeUpdatePartial
 
 
 async def get_resumes(session: AsyncSession, owner_id: int):

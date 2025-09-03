@@ -3,11 +3,11 @@ from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
-from app_v1.core import db_helper
-from app_v1.models import User
-from app_v1.schemas.user import UserCreate, UserLogin
-from app_v1.auth.model.token_model import Token
-from app_v1.auth.service.jwt_service import create_access_token, get_password_hash, verify_password, verify_access_token
+from app.app_v1.core import db_helper
+from app.app_v1.models import User
+from app.app_v1.schemas.user import UserCreate
+from app.app_v1.auth.model.token_model import Token
+from app.app_v1.auth.service.jwt_service import create_access_token, get_password_hash, verify_password
 
 router = APIRouter(tags=["JWT Auth"])
 

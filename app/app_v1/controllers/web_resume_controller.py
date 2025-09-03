@@ -1,19 +1,19 @@
-from fastapi import APIRouter, Request, Form, Depends, Response, HTTPException
+from fastapi import APIRouter, Request, Form, Depends, HTTPException
 from fastapi.responses import RedirectResponse
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette.status import HTTP_303_SEE_OTHER
 from fastapi.templating import Jinja2Templates
 
-from app_v1.core import db_helper
-from app_v1.auth.service.jwt_service import create_access_token, decode_jwt_token, verify_password, get_password_hash
-from app_v1.models.user import User
-from app_v1.schemas.resume import ResumeCreate, ResumeUpdate, ResumeUpdatePartial
-from app_v1.repositories import resume_repository, user_repository
-from app_v1.schemas.user import UserCreate
+from app.app_v1.core import db_helper
+from app.app_v1.auth.service.jwt_service import create_access_token, decode_jwt_token, verify_password
+from app.app_v1.models.user import User
+from app.app_v1.schemas.resume import ResumeCreate, ResumeUpdate, ResumeUpdatePartial
+from app.app_v1.repositories import user_repository, resume_repository
+from app.app_v1.schemas.user import UserCreate
 
 router = APIRouter()
-templates = Jinja2Templates(directory="templates")
+templates = Jinja2Templates(directory="app/templates")
 
 
 @router.get("/login")

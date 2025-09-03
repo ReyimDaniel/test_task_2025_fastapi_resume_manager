@@ -1,14 +1,12 @@
-from typing import Annotated
-
-from fastapi import APIRouter, Depends, Path, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
 
-from app_v1.auth.service.jwt_service import get_current_user
-from app_v1.models import User
-from app_v1.core import db_helper
-from app_v1.repositories import resume_repository
-from app_v1.schemas.resume import ResumeRead, ResumeCreate, ResumeUpdate, ResumeUpdatePartial
+from app.app_v1.auth.service.jwt_service import get_current_user
+from app.app_v1.models import User
+from app.app_v1.core import db_helper
+from app.app_v1.repositories import resume_repository
+from app.app_v1.schemas.resume import ResumeRead, ResumeCreate, ResumeUpdate, ResumeUpdatePartial
 
 router = APIRouter(tags=['resumes'])
 

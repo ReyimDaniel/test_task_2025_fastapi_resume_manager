@@ -6,9 +6,9 @@ from passlib.context import CryptContext
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app_v1.core.config import settings
-from app_v1.core import db_helper
-from app_v1.models import User
+from app.app_v1.core.config import settings
+from app.app_v1.core import db_helper
+from app.app_v1.models import User
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -27,19 +27,19 @@ def create_access_token(data: dict) -> str:
     to_encode = data.copy()
     expire = datetime.utcnow() + timedelta(minutes=settings.jwt_access_token_expire_minutes)
     to_encode.update({"exp": expire, "iat": datetime.utcnow()})
-    encoded_jwt = jwt.encode(to_encode, settings.jwt_private_key, algorithm=settings.jwt_algorithm)
+    encoded_jwt = jwt.encode(to_encode, settings.jwt_private_key_path.read_text(), algorithm=settings.jwt_algorithm)
     return encoded_jwt
 
 
 def decode_access_token(token: str) -> dict:
-    return jwt.decode(token, settings.jwt_public_key, algorithms=[settings.jwt_algorithm])
+    return jwt.decode(token, settings.jwt_public_key_path.read_text(), algorithms=[settings.jwt_algorithm])
 
 
 def verify_access_token(token: str = Depends(oauth2_scheme)):
     try:
         payload = jwt.decode(
             token,
-            settings.jwt_public_key,
+            settings.jwt_public_key_path.read_text(),
             algorithms=[settings.jwt_algorithm]
         )
         return payload
@@ -59,7 +59,7 @@ def decode_jwt_token(token: str) -> dict:
     try:
         payload = jwt.decode(
             token,
-            settings.jwt_public_key,
+            settings.jwt_public_key_path.read_text(),
             algorithms=[settings.jwt_algorithm]
         )
         return payload

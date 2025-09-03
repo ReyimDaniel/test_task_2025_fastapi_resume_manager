@@ -1,11 +1,10 @@
-import hashlib
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from sqlalchemy.engine import Result
 
-from app_v1.auth.service.jwt_service import get_password_hash
-from app_v1.models.user import User
-from app_v1.schemas.user import UserCreate, UserUpdate, UserUpdatePartial
+from app.app_v1.auth.service.jwt_service import get_password_hash
+from app.app_v1.models.user import User
+from app.app_v1.schemas.user import UserCreate, UserUpdate, UserUpdatePartial
 
 
 async def get_users(session: AsyncSession) -> list[User]:
