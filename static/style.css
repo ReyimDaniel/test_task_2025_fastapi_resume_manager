@@ -10,6 +10,10 @@ body {
     margin: 60px auto;
 }
 
+.container textarea {
+    font-family: Arial, sans-serif;
+}
+
 .auth-container {
     background: #fff;
     padding: 30px;
